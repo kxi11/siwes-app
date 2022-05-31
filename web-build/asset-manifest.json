@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 {
   "files": {
     "app.js": "/static/js/app.52919ce1.chunk.js",
@@ -20,27 +19,4 @@
     "static/js/2.3821c622.chunk.js",
     "static/js/app.52919ce1.chunk.js"
   ]
-=======
-{
-  "files": {
-    "app.js": "/static/js/app.b8cca7cd.chunk.js",
-    "app.js.map": "/static/js/app.b8cca7cd.chunk.js.map",
-    "runtime~app.js": "/static/js/runtime~app.2e9f1821.js",
-    "runtime~app.js.map": "/static/js/runtime~app.2e9f1821.js.map",
-    "static/js/2.f8b8302d.chunk.js": "/static/js/2.f8b8302d.chunk.js",
-    "static/js/2.f8b8302d.chunk.js.map": "/static/js/2.f8b8302d.chunk.js.map",
-    "favicon-16.png": "/favicon-16.png",
-    "favicon-32.png": "/favicon-32.png",
-    "favicon.ico": "/favicon.ico",
-    "index.html": "/index.html",
-    "manifest.json": "/manifest.json",
-    "serve.json": "/serve.json",
-    "static/js/2.f8b8302d.chunk.js.LICENSE.txt": "/static/js/2.f8b8302d.chunk.js.LICENSE.txt"
-  },
-  "entrypoints": [
-    "static/js/runtime~app.2e9f1821.js",
-    "static/js/2.f8b8302d.chunk.js",
-    "static/js/app.b8cca7cd.chunk.js"
-  ]
->>>>>>> d41fc14d290634129b712f329a255f2600ad507f
 }
