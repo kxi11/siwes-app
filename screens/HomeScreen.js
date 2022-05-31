@@ -75,8 +75,9 @@ const HomeScreen = () => {
         }
 
         addDoc(logsCollectionRef, form)
-        
+
         setForm({
+            userId: auth.currentUser.uid,
             activity: [""],
             Day: "",
             locations: [""],
@@ -125,9 +126,13 @@ const HomeScreen = () => {
     }
 
     const handleLog = () => {
-        if(logs.userId === auth.currentUser.uid){
+        if (logs.userId === auth.currentUser.uid) {
 
         }
+    }
+
+    const handleProfile = () => {
+        navigation.replace("Profile")
     }
 
     return (
@@ -145,8 +150,13 @@ const HomeScreen = () => {
                 </Navbar>
                 <div className='container-fluid d-grid justify-content-center'>
                     <div className="collapse" id="collapseExample">
-                        <Navbar.Text>
-                            <Text>Signed in as {auth.currentUser?.email}</Text>
+                        <Navbar.Text className="container-fluid">
+                            {/* <Text>Signed in as {auth.currentUser?.email}</Text> */}
+                            <Button className='m-3' onClick={handleProfile}>
+                                <Text>
+                                    Detailed Profile
+                                </Text>
+                            </Button>
                             <Button className='m-3 btn-danger' onClick={handleSignOut}>
                                 <Text>
                                     Sign out
@@ -159,7 +169,7 @@ const HomeScreen = () => {
 
 
                 <Button className='m-3 d-grid gap-2 col-6 mx-auto btn-lg' data-bs-toggle="collapse" data-bs-target="#modalExample" aria-expanded="false" aria-controls="modalExample" onClick={() => setPopupActive(!popupActive)} title="Add Log"><Text>Add Log</Text></Button>
-                
+
                 {popupActive && <View className='collapse fade' id='modalExample'>
                     <div className='container-fluid'>
                         <View className='popup-inner'>
@@ -226,39 +236,39 @@ const HomeScreen = () => {
 
                 <div className='container-fluid'>
                     <CardGroup className="row row-cols-2 m-3 p-3">
-                        
+
                         {logs.filter((log) => {
-                            if (log.userId === auth.currentUser.uid){
+                            if (log.userId === auth.currentUser.uid) {
                                 return log;
                             }
                         })
-                        .map((log, i) => (
-                            <Card className="col" key={log.id}>
-                                <Card.Title className='mt-3'>{log.Week}</Card.Title>
+                            .map((log, i) => (
+                                <Card className="col" key={log.id}>
+                                    <Card.Title className='mt-3'>{log.Week}</Card.Title>
 
-                                <Card.Text dangerouslySetInnerHTML={{ __html: log.Day }}></Card.Text>
-                                {log.viewing && <Card.Body>
-                                    <Card.Text className='h6'>Activities</Card.Text>
-                                    <Card.Text>
-                                        {log.activity.map((activities, i) => (
-                                            <Card.Text key={i}>{activities}</Card.Text>
-                                        ))}
-                                    </Card.Text>
-                                    <Card.Text className='h6'>Locations</Card.Text>
-                                    <Card.Text>
-                                        {log.locations.map((location, i) => (
-                                            <Text key={i}>{location}</Text>
-                                        ))}
-                                    </Card.Text>
-                                </Card.Body>}
+                                    <Card.Text dangerouslySetInnerHTML={{ __html: log.Day }}></Card.Text>
+                                    {log.viewing && <Card.Body>
+                                        <Card.Text className='h6'>Activities</Card.Text>
+                                        <Card.Text>
+                                            {log.activity.map((activities, i) => (
+                                                <Card.Text key={i}>{activities}</Card.Text>
+                                            ))}
+                                        </Card.Text>
+                                        <Card.Text className='h6'>Locations</Card.Text>
+                                        <Card.Text>
+                                            {log.locations.map((location, i) => (
+                                                <Text key={i}>{location}</Text>
+                                            ))}
+                                        </Card.Text>
+                                    </Card.Body>}
 
-                                <ButtonGroup className='btn-group-vertical'>
-                                    <Button className='d-grid gap-2 col-6 mx-auto' onClick={() => handleView(log.id)} title="View"><Text>View {log.viewing ? 'less' : 'more'}</Text></Button>
-                                    <Button className='remove d-grid gap-2 col-6 mx-auto btn-danger mb-4' onClick={() => removeLog(log.id)} title="Delete"><Text>Delete</Text></Button>
-                                </ButtonGroup>
+                                    <ButtonGroup className='btn-group-vertical'>
+                                        <Button className='d-grid gap-2 col-6 mx-auto' onClick={() => handleView(log.id)} title="View"><Text>View {log.viewing ? 'less' : 'more'}</Text></Button>
+                                        <Button className='remove d-grid gap-2 col-6 mx-auto btn-danger mb-4' onClick={() => removeLog(log.id)} title="Delete"><Text>Delete</Text></Button>
+                                    </ButtonGroup>
 
-                            </Card>
-                        ))}
+                                </Card>
+                            ))}
                     </CardGroup>
 
                 </div >

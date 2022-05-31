@@ -2,7 +2,8 @@ import { useNavigation } from '@react-navigation/native'
 import React, { useState, useEffect } from 'react'
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth'
 import { StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity, Image } from 'react-native'
-import { auth } from '../firebase'
+import { collection } from 'firebase/firestore'
+import { auth, db } from '../firebase'
 import Header from '../components/header';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button } from 'react-bootstrap'
@@ -11,34 +12,43 @@ const LoginScreen = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
-  const navigation =useNavigation()
+  const navigation = useNavigation()
 
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(user => {
-      if (user) {
-        navigation.replace("Home")
-      }
-    })
+  const ref = collection(db, "profiles");
 
-    return unsubscribe
-  }, [])
+  // useEffect(() => {
+  //   const unsubscribe = auth.onAuthStateChanged(user => {
+  //     if (user) {
+  //       navigation.replace("Register")
+  //     }
+  //   })
+
+  //   return unsubscribe
+  // }, [])
 
   const handleSignUp = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then(userCredentials => {
         const user = userCredentials.user;
-        console.log('Registered in with: ',user.email);
+        console.log('Registered in with: ', user.email);
       })
       .catch(error => alert(error.message))
+    if (auth.currentUser) {
+      navigation.replace("Register")
+    }
   }
 
   const handleLogin = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then(userCredentials => {
         const user = userCredentials.user;
-        console.log('Logged in with: ',user.email);
+        console.log('Logged in with: ', user.email);
       })
       .catch(error => alert(error.message))
+
+    if (auth.currentUser) {
+      navigation.replace("Home")
+    }
   }
 
   return (
@@ -46,39 +56,45 @@ const LoginScreen = () => {
       style={styles.container}
       behavior="padding">
 
-        <View>
-                  <Image
-                    style= {{width:250, height: 250}}
-                    source={{uri: 'https://yt3.ggpht.com/a/AGF-l79SeAEqp4CvG_EAONZnGRfG0eK_W_Iopwgb1Q=s900-c-k-c0xffffffff-no-rj-mo'}}
-                  />
-        </View>
-        <Header title='DIGITAL LOGBOOK'/>
-        <View style={styles.inputContainer}>
-          <TextInput
-            placeholder="Email"
-            value={email}
-            onChangeText={text => setEmail(text)}
-            style={styles.input} />
-          <TextInput
-            placeholder="Password"
-            value={password}
-            onChangeText={text => setPassword(text)}
-            style={styles.input}
-            secureTextEntry />
-        </View>
+      <View>
+        <Image
+          style={{ width: 250, height: 250 }}
+          source={{ uri: 'https://yt3.ggpht.com/a/AGF-l79SeAEqp4CvG_EAONZnGRfG0eK_W_Iopwgb1Q=s900-c-k-c0xffffffff-no-rj-mo' }}
+        />
+      </View>
+      <Header title='DIGITAL LOGBOOK' />
+      <View style={styles.inputContainer}>
+        <TextInput
+          placeholder="Email"
+          value={email}
+          onChangeText={text => setEmail(text)}
+          style={styles.input} />
+        <TextInput
+          placeholder="Password"
+          value={password}
+          onChangeText={text => setPassword(text)}
+          style={styles.input}
+          secureTextEntry />
+      </View>
 
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity onPress={handleLogin} style={styles.button}>
-            <Button>
-              Login
-            </Button>
-          </TouchableOpacity>
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity onPress={handleLogin} style={styles.button}>
+          <Button>
+            Login
+          </Button>
+        </TouchableOpacity>
+        {!password ? (
+          <View>
+          </View>
+        ) : (
           <TouchableOpacity onPress={handleSignUp}>
             <Button className='mt-3'>
               Register
             </Button>
           </TouchableOpacity>
-        </View>
+        )}
+
+      </View>
     </KeyboardAvoidingView>
   )
 }
@@ -123,6 +139,6 @@ const styles = StyleSheet.create({
   buttonOutlineText: {
     color: '#0782F9',
     fontWeight: '700',
-    fontSize: 16, 
+    fontSize: 16,
   },
 })
